@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import argparse
-import random
 
 class Node:
 
@@ -52,7 +51,7 @@ class Network:
 		# Your code  for task 4 goes here
 
 		for node_number in range(N):
-			value = random.random()
+			value = np.random.random()
 			connections = [0 for _ in range(N)]
 			self.nodes.append(Node(value, node_number, connections))
 
