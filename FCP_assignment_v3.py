@@ -40,18 +40,18 @@ class Network:
 		#Your code for task 3 goes here
 		total_clustering = 0
         	for node in self.nodes:
-            		num_neighbors = len(node.neighbors)
-           		num_possible_connections = num_neighbors * (num_neighbors - 1) / 2
-            		if num_possible_connections > 0:
+            	    num_neighbors = len(node.neighbors)
+           	    num_possible_connections = num_neighbors * (num_neighbors - 1) / 2
+            	    if num_possible_connections > 0:
                		 num_actual_connections = 0
                		 for neighbor1 in node.neighbors:
-                    		for neighbor2 in node.neighbors:
-					if neighbor1 in neighbor2.neighbors:
-						num_actual_connections += 1
-				node_clustering = num_actual_connections / num_possible_connections
-           		 else:
-               			 node_clustering = 0
-           		 total_clustering += node_clustering
+                    	     for neighbor2 in node.neighbors:
+				 if neighbor1 in neighbor2.neighbors:
+					num_actual_connections += 1
+			node_clustering = num_actual_connections / num_possible_connections
+           	else:
+               	     node_clustering = 0
+           	total_clustering += node_clustering
        	 return total_clustering / len(self.nodes)
 
 	def make_random_network(self, N, connection_probability=0.5):
