@@ -91,7 +91,7 @@ def plot(self):
                 neighbour_x = network_radius * np.cos(neighbour_angle)
                 neighbour_y = network_radius * np.sin(neighbour_angle)
                 ax.plot((node_x, neighbour_x), (node_y, neighbour_y), color='black')
-                plt.show()
+        plt.show()
                 
 def test_networks():
 
