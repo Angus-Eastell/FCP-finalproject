@@ -22,19 +22,18 @@ class Network:
 
 	def get_mean_degree(self):
 		#Your code  for task 3 goes here
-		#Calculate the mean degree of the network
-        	total_degree = sum(len(node.neighbors) for node in self.nodes)
-        	return total_degree / len(self.nodes)
+		total_degree = sum(len(node.neighbors) for node in self.nodes)
+		return total_degree / len(self.nodes)
 
 	def get_mean_clustering(self):
 		#Your code for task 3 goes here
 		#Calculate the mean clustering
-       	 	total_path_length = 0
-        	for node in self.nodes:
-            		paths = self.shortest_path_length(node.id)
-            		node_path_length = sum(paths.values()) / (len(self.nodes) - 1)
-            		total_path_length += node_path_length
-        	return total_path_length / len(self.nodes)
+		total_path_length = 0
+		for node in self.nodes:
+			paths = self.shortest_path_length(node.id)
+			node_path_length = sum(paths.values()) / (len(self.nodes) - 1)
+			total_path_length += node_path_length
+		return total_path_length / len(self.nodes)
 
 	def get_mean_path_length(self):
 		#Your code for task 3 goes here
