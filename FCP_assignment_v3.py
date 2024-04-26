@@ -4,6 +4,7 @@ import matplotlib.cm as cm
 import argparse
 import sys
 import random
+import math 
 
 class Node:
 
