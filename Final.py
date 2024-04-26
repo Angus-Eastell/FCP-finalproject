@@ -478,4 +478,3 @@ def main():
 
 if __name__=="__main__":
 	main()
-# C:\Users\angus\AppData\Local\Programs\Python\Python312\python.exe
