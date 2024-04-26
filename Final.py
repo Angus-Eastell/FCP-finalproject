@@ -239,7 +239,7 @@ def calculate_agreement(population, row, col, external=0.0):
 	agreement += external * individual_opinion #enforcing original opinion of individual
 	return agreement
 
-def ising_step(population, external=0.0):
+def ising_step(population, external=0.0, alpha=1.0):
 	'''
 	This function will perform a single update of the Ising model
 	Inputs: population (numpy array)
@@ -248,7 +248,7 @@ def ising_step(population, external=0.0):
 	
 	n_rows, n_cols = population.shape
 	row = np.random.randint(0, n_rows)
-	col  = np.random.randint(0, n_cols)
+	col = np.random.randint(0, n_cols)
 
 	agreement = calculate_agreement(population, row, col, external=0.0)
 
@@ -315,7 +315,7 @@ def ising_main(population, alpha=None, external=0.0):
 	for frame in range(100):
 		# Iterating single steps 1000 times to form an update
 		for step in range(1000):
-			ising_step(population, external)
+			ising_step(population, external, alpha)
 		print('Step:', frame, end='\r')
 		plot_ising(im, population)
 
@@ -427,15 +427,13 @@ def main():
 	# small world
 
 	# Create Parser object
-	parser = argparse.ArgumentParser()
 	# Add arguments
 	parser.add_argument("-ring_network", nargs=1, type=int, default=10)
 	parser.add_argument("-small_world", nargs=1, type=int, default=10)
 	parser.add_argument("-re_wire", type=float, default=0.2)  #
 
-	# Process the provided data
+	# Variable definition
 	args = parser.parse_args()
-
 	N_ring = args.ring_network
 	N_small = args.small_world
 	re_wire_prob = args.re_wire
@@ -480,3 +478,4 @@ def main():
 
 if __name__=="__main__":
 	main()
+# C:\Users\angus\AppData\Local\Programs\Python\Python312\python.exe
