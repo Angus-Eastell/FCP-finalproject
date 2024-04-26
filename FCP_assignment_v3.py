@@ -384,16 +384,16 @@ def plot_updates(update_history):
 def test_defuant():
     num_individuals = 10
     T = 0.5
-    beta_low = 0.1
-    beta_high = 0.9
+    beta_small = 0.1
+    beta_ = 0.9
     num_updates = 100
 
-    update_history_small = updates(num_individuals, T, beta_low, num_updates)
+    update_history_small = updates(num_individuals, T, beta_small, num_updates)
     assert update_history_low.shape == (num_updates, num_individuals), "Incorrect shape"
     final_opinions = update_history_low[-1]
     assert (final_opinions.max() - final_opinions.min()) < T, "No convergence"
 
-    update_history_big = updates(num_individuals, T, beta_high, num_updates)
+    update_history_big = updates(num_individuals, T, beta_big, num_updates)
     final_opinions = update_history_high[-1]
     assert (final_opinions.max() - final_opinions.min()) < T, "No convergence"
 
