@@ -333,14 +333,14 @@ def initialize_opinions(num_individuals):
 
 # update opinions.
 def update_opinion(opinions, T, beta):
-	num_individuals = len(opinions)
-	i = np.random.randint(num_individuals)
-	neighbor = select_neighbor(i, num_individuals)
-	diff = abs(opinions[i] - opinions[neighbor])
-	if diff < T:
-		mean_opinion = (opinions[i] + opinions[neighbor]) / 2
-		opinions[i] += beta * (mean_opinion - opinions[i])
-		opinions[neighbor] += beta * (mean_opinion - opinions[neighbor])
+    num_individuals = len(opinions)
+    i = np.random.randint(num_individuals)
+    neighbor = select_neighbor(i, num_individuals)
+    diff = abs(opinions[i] - opinions[neighbor])
+    if diff < T:
+        print(diff,T)
+        opinions[i] += beta * (opinions[neighbor] - opinions[i])
+        opinions[neighbor] += beta * (opinions[i] - opinions[neighbor])
 
 
 # randomly choose left or right neighbor.
