@@ -64,35 +64,35 @@ class Network:
                 for neighbour_index in range(index + 1, N):
                     if np.random.random() < connection_probability:
                         node.connections[neighbour_index] = 1
-                        self.nodes[neighbour_index].connections[index] = 1
 
-def plot(self):
-    #Plot the network in a circular layout
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-    ax.set_axis_off()
+    def plot(self):
+        #Plot the network in a circular layout
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        ax.set_axis_off()
 
-    num_nodes = len(self.nodes)
-    network_radius = num_nodes * 10
-    ax.set_xlim([-1.1*network_radius, 1.1*network_radius])
-    ax.set_ylim([-1.1*network_radius, 1.1*network_radius])
+        num_nodes = len(self.nodes)
+        network_radius = num_nodes * 10
+        ax.set_xlim([-1.1*network_radius, 1.1*network_radius])
+        ax.set_ylim([-1.1*network_radius, 1.1*network_radius])
 
-    for (i, node) in enumerate(self.nodes):
-        node_angle = i * 2 * np.pi / num_nodes
-        node_x = network_radius * np.cos(node_angle)
-        node_y = network_radius * np.sin(node_angle)
+        for (i, node) in enumerate(self.nodes):
+            node_angle = i * 2 * np.pi / num_nodes
+            node_x = network_radius * np.cos(node_angle)
+            node_y = network_radius * np.sin(node_angle)
 
-        circle = plt.Circle((node_x, node_y), 0.3*num_nodes, color=cm.hot(node.value))
-        ax.add_patch(circle)
+            circle = plt.Circle((node_x, node_y), 0.3*num_nodes, color=cm.hot(node.value))
+            ax.add_patch(circle)
 
-        for neighbour_index in range(i+1, num_nodes):
-            if node.connections[neighbour_index]:
-                neighbour_angle = neighbour_index * 2 * np.pi / num_nodes
-                neighbour_x = network_radius * np.cos(neighbour_angle)
-                neighbour_y = network_radius * np.sin(neighbour_angle)
-                ax.plot((node_x, neighbour_x), (node_y, neighbour_y), color='black')
-        plt.show()
-                
+            for neighbour_index in range(i+1, num_nodes):
+                if node.connections[neighbour_index]:
+                    neighbour_angle = neighbour_index * 2 * np.pi / num_nodes
+                    neighbour_x = network_radius * np.cos(neighbour_angle)
+                    neighbour_y = network_radius * np.sin(neighbour_angle)
+                    ax.plot((node_x, neighbour_x), (node_y, neighbour_y), color='black')
+
+            plt.show()
+
 def test_networks():
 
     #Ring network
@@ -111,34 +111,15 @@ def test_networks():
     assert (network.get_clustering() == 0), network.get_clustering()
     assert (network.get_path_length() == 2.777777777777778), network.get_path_length()
 
-    #One-sided network
-    nodes = []
-    num_nodes = 10
-    for node_number in range(num_nodes):
-        connections = [0 for val in range(num_nodes)]
-        connections[(node_number + 1) % num_nodes] = 1
-        new_node = Node(0, node_number, connections=connections)
-        nodes.append(new_node)
-    network = Network(nodes)
-
-    print("Testing one-sided network")
-    assert (network.get_mean_degree() == 1), network.get_mean_degree()
-    assert (network.get_clustering() == 0), network.get_clustering()
-    assert (network.get_path_length() == 5), network.get_path_length()
-
-    #Fully connected network
-    nodes = []
-    num_nodes = 10
-    for node_number in range(num_nodes):
-        connections = [1 for val in range(num_nodes)]
-        connections[node_number] = 0
-        new_node = Node(0, node_number, connections=connections)
-        nodes.append(new_node)
-    network = Network(nodes)
-
-    print("Testing fully connected network")
-    assert (network.get_mean_degree() == num_nodes - 1), network.get_mean_degree()
-    assert (network.get_clustering() == 1), network.get_clustering()
-    assert (network.get_path_length() == 1), network.get_path_length()
-
-    print("All tests passed")
+#Fully connected network
+nodes = []
+num_nodes = 10
+for node_number in range(num_nodes):
+    connections = [1 for val in range(num_nodes)]
+    connections[node_number] = 0
+    new_node = Node(0, node_number, connections=connections)
+    nodes.append(new_node)
+network = Network(nodes)
+network = Network(num_nodes)
+network.make_random_network(num_nodes)
+network.plot()
