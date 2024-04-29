@@ -326,7 +326,7 @@ This section contains code for the Defuant Model - task 2 in the assignment
 ==============================================================================================================
 '''
 
-# initialize opinions of individuals with random values between 0 and 1.
+# initialize opinions of each individuals with random values between 0 and 1.
 def initialize_opinions(num_individuals):
 	return np.random.rand(num_individuals)
 
@@ -344,8 +344,8 @@ def update_opinion(opinions, T, beta):
 
 
 # randomly choose left or right neighbor.
-def select_neighbor(index, num_individuals):
-	return (index - 1) % num_individuals if np.random.rand() < 0.5 else (index + 1) % num_individuals
+def select_neighbor(i, num_individuals):
+	return (i - 1) % num_individuals if np.random.rand() < 0.5 else (i + 1) % num_individuals
 
 
 # run opinion updates and record history.
@@ -358,7 +358,7 @@ def updates(num_individuals, T, beta, num_updates):
 	return update_history
 
 
-# Plot opinion distribution.
+# plot opinion distribution.
 def plot_histogram(opinions):
 	plt.figure(figsize=(10, 5))
 	plt.hist(opinions, bins=20, alpha=0.75)
@@ -381,7 +381,7 @@ def plot_updates(update_history):
 	plt.show()
 
 
-# Test the model under different parameters.
+# test the model under different parameters.
 def test_defuant():
 	num_individuals = 10
 	T = 0.5
