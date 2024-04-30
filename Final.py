@@ -14,33 +14,24 @@ class Node:
 		self.connections = connections
 		self.value = value
 
-class Network: 
+class Network:
 
 	def __init__(self, nodes=None):
 
 		if nodes is None:
 			self.nodes = []
 		else:
-			self.nodes = nodes 
+			self.nodes = nodes
 
 	def get_mean_degree(self):
 		#Your code  for task 3 goes here
 		#Calculate the mean degree of the network
-		total_degree = sum(len(node.neighbors) for node in self.nodes)
+		total_degree = sum(sum(node.connections) for node in self.nodes)
 		return total_degree / len(self.nodes)
 
 	def get_mean_clustering(self):
 		#Your code for task 3 goes here
 		#Calculate the mean clustering
-		total_path_length = 0
-		for node in self.nodes:
-			paths = self.shortest_path_length(node.id)
-			node_path_length = sum(paths.values()) / (len(self.nodes) - 1)
-			total_path_length += node_path_length
-		return total_path_length / len(self.nodes)
-
-	def get_mean_path_length(self):
-		#Your code for task 3 goes here
 		total_clustering = 0
 		for node in self.nodes:
 			num_neighbors = len(node.neighbors)
@@ -56,6 +47,15 @@ class Network:
 				node_clustering = 0
 			total_clustering += node_clustering
 		return total_clustering / len(self.nodes)
+
+	def get_mean_path_length(self):
+		#Your code for task 3 goes here
+		total_path_length = 0
+		for node in self.nodes:
+			distances = self.bfs(node)
+			node_path_length = sum(distances.values()) / (len(self.nodes) - 1)
+			total_path_length += node_path_length
+		return total_path_length / len(self.nodes)
 
 	def make_random_network(self, N, connection_probability=0.5):
 		'''
@@ -74,6 +74,43 @@ class Network:
 				if np.random.random() < connection_probability:
 					node.connections[neighbour_index] = 1
 					self.nodes[neighbour_index].connections[index] = 1
+
+	def bfs(self, start):
+		visited = {node: False for node in self.nodes}
+		distances = {node: 0 for node in self.nodes}
+		queue = [start]
+		visited[start] = True
+		while queue:
+			current = queue.pop(0)
+			for neighbour_index, is_connected in enumerate(current.connections):
+				if is_connected and not visited[self.nodes[neighbour_index]]:
+					neighbour = self.nodes[neighbour_index]
+					visited[neighbour_index] = True
+					distances[neighbour_index] = distances[current] + 1
+					queue.append(neighbour)
+		return distances
+
+	def plot_network(self):
+		plt.figure(figsize=(8, 8))
+
+		# Generate random positions for the nodes
+		positions = np.random.rand(len(self.nodes), 2)
+
+		for i, node in enumerate(self.nodes):
+			x, y = positions[i]
+			plt.scatter(x, y, color=cm.viridis(node.value), s=500)
+			plt.text(x, y, str(node.index), ha='center', va='center', fontsize=10)
+
+		for i, node in enumerate(self.nodes):
+			for neighbour_index, is_connected in enumerate(node.connections):
+				if is_connected:
+					x1, y1 = positions[i]
+					x2, y2 = positions[neighbour_index]
+					plt.plot([x1, x2], [y1, y2], color='black', linewidth=1)
+
+		plt.title("Networks")
+		plt.axis('off')
+		plt.show()
 
 	def make_ring_network(self, N, neighbour_range=1):
 		# Your code  for task 4 goes here
@@ -124,7 +161,6 @@ class Network:
 						node.connections[new_index] = 1
 						self.nodes[new_index].connections[node.index] = 1
 
-
 	def plot(self):
 
 		fig = plt.figure()
@@ -151,6 +187,35 @@ class Network:
 					neighbour_y = network_radius * np.sin(neighbour_angle)
 
 					ax.plot((node_x, neighbour_x), (node_y, neighbour_y), color='black')
+def test_network_functions():
+	"""
+    Run test functions to verify the implementation of the network functions.
+    """
+	# Test make_random_network
+	network = Network(10)
+	network.make_random_network(0.5)
+	assert isinstance(network, Network)
+	assert len(network.nodes) == 10
+
+	# Test calculate_mean_degree
+	mean_degree = network.get_mean_degree()
+	assert isinstance(mean_degree, float)
+
+	# Test calculate_mean_clustering_coefficient
+	mean_clustering_coef = network.get_mean_clustering()
+	assert isinstance(mean_clustering_coef, float)
+
+	# Test calculate_mean_path_length
+	mean_path_length = network.get_mean_path_length()
+	assert isinstance(mean_path_length, float)
+
+	print("All tests passed!")
+
+	num_nodes = 10
+	network = Network(num_nodes)
+	network.make_random_network(10, 0.5)
+	network.plot_network()
+	plt.show()
 
 def test_networks():
 
@@ -206,20 +271,20 @@ This section contains code for the Ising Model - task 1 in the assignment
 ==============================================================================================================
 '''
 def get_neighbours_opinions(population, row, col):
-		'''
-		Retrieves the value of the neighbours surrounding the 
-		randomly picked value in the numpy array and putting 
-		them into a list
-		The modulo symbols are neccessary as to wrap the
-		numbers round once it reaches a border
-		'''
-		n,m = population.shape
-		neighbours = []
-		neighbours.append(population[(row-1), col])
-		neighbours.append(population[(row+1)%n, col])
-		neighbours.append(population[row, col-1])
-		neighbours.append(population[row, (col+1)%m])
-		return neighbours
+	'''
+    Retrieves the value of the neighbours surrounding the
+    randomly picked value in the numpy array and putting
+    them into a list
+    The modulo symbols are neccessary as to wrap the
+    numbers round once it reaches a border
+    '''
+	n,m = population.shape
+	neighbours = []
+	neighbours.append(population[(row-1), col])
+	neighbours.append(population[(row+1)%n, col])
+	neighbours.append(population[row, col-1])
+	neighbours.append(population[row, (col+1)%m])
+	return neighbours
 
 def calculate_agreement(population, row, col, external=0.0):
 	'''
@@ -245,7 +310,7 @@ def ising_step(population, external=0.0, alpha=1.0):
 	Inputs: population (numpy array)
 			external (float) - optional - the magnitude of any external "pull" on opinion
 	'''
-	
+
 	n_rows, n_cols = population.shape
 	row = np.random.randint(0, n_rows)
 	col = np.random.randint(0, n_cols)
@@ -333,14 +398,14 @@ def initialize_opinions(num_individuals):
 
 # update opinions.
 def update_opinion(opinions, T, beta):
-    num_individuals = len(opinions)
-    i = np.random.randint(num_individuals)
-    neighbor = select_neighbor(i, num_individuals)
-    diff = abs(opinions[i] - opinions[neighbor])
-    if diff < T:
-        print(diff,T)
-        opinions[i] += beta * (opinions[neighbor] - opinions[i])
-        opinions[neighbor] += beta * (opinions[i] - opinions[neighbor])
+	num_individuals = len(opinions)
+	i = np.random.randint(num_individuals)
+	neighbor = select_neighbor(i, num_individuals)
+	diff = abs(opinions[i] - opinions[neighbor])
+	if diff < T:
+		print(diff,T)
+		opinions[i] += beta * (opinions[neighbor] - opinions[i])
+		opinions[neighbor] += beta * (opinions[i] - opinions[neighbor])
 
 
 # randomly choose left or right neighbor.
@@ -407,13 +472,13 @@ This section contains code for the main function- you should write some code for
 
 def main():
 	parser = argparse.ArgumentParser()
-	
+
 	#Flag definition
 	parser.add_argument("-ising_model", action='store_true')
 	parser.add_argument("-external", type=float, default=0)
 	parser.add_argument("-alpha", type=float, default=1)
 	parser.add_argument("-test_ising", action='store_true')
-	
+
 	#Variable definition
 	args = parser.parse_args()
 	external = args.external
