@@ -243,25 +243,25 @@ def ising_step(population = None, network = None, external=0.0, alpha=1.0):
 	Inputs: population (numpy array)
 			external (float) - optional - the magnitude of any external "pull" on opinion
 	'''
-    if population:
-        n_rows, n_cols = population.shape
-        row = np.random.randint(0, n_rows)
-        col = np.random.randint(0, n_cols)
+if population:
+	n_rows, n_cols = population.shape
+	row = np.random.randint(0, n_rows)
+	col = np.random.randint(0, n_cols)
 
-        agreement = calculate_agreement(population, row, col, external=0.0)
+	agreement = calculate_agreement(population, row, col, external=0.0)
 
-        if agreement < 0:
-            population[row, col] *= -1
-        elif alpha:
-            random_num = random.random()
-            p = math.e**(-agreement/alpha) #chance that it'll flip anyways
-            if random_num < p:
-                population[row, col] *= -1
-				
-    if network:
-        
-        
-	
+	if agreement < 0:
+		population[row, col] *= -1
+	elif alpha:
+		random_num = random.random()
+		p = math.e**(-agreement/alpha) #chance that it'll flip anyways
+		if random_num < p:
+			population[row, col] *= -1
+
+if network:
+
+
+
 
 
 def plot_ising(im, population):
@@ -274,28 +274,28 @@ def plot_ising(im, population):
 	plt.pause(0.1)
 
 def ising_main(population = None, Network= None, alpha=None, external=0.0):
-    if population:
-        fig = plt.figure()
-        ax = fig.add_subplot(111)
-        ax.set_axis_off()
-        im = ax.imshow(population, interpolation='none', cmap='RdPu_r')
+	if population:
+		fig = plt.figure()
+		ax = fig.add_subplot(111)
+		ax.set_axis_off()
+		im = ax.imshow(population, interpolation='none', cmap='RdPu_r')
 
-	# Iterating an update 100 times
-        for frame in range(100):
-            # Iterating single steps 1000 times to form an update
-            for step in range(1000):
-                ising_step(population, external, alpha)
-            print('Step:', frame, end='\r')
-            plot_ising(im, population)
-		
-    if network:
 		# Iterating an update 100 times
-        for frame in range(100):
-            # Iterating single steps 1000 times to form an update
-            for step in range(1000):
-                ising_step(population, external, alpha)
-            print('Step:', frame, end='\r')
-            network.plot()
+		for frame in range(100):
+			# Iterating single steps 1000 times to form an update
+			for step in range(1000):
+				ising_step(population, external, alpha)
+			print('Step:', frame, end='\r')
+			plot_ising(im, population)
+
+	if network:
+		# Iterating an update 100 times
+		for frame in range(100):
+			# Iterating single steps 1000 times to form an update
+			for step in range(1000):
+				ising_step(population, external, alpha)
+			print('Step:', frame, end='\r')
+			network.plot()
 			plt.show()
 
 
@@ -307,25 +307,25 @@ def main():
 	parser.add_argument("-external", type=float, default=0)
 	parser.add_argument("-alpha", type=float, default=1)
 	parser.add_argument("-test_ising", action='store_true')
-    parser.add_argument("-use_network", action='store_true')
-	
-    #Variable definition
-    args = parser.parse_args()
-	external = args.external
-	alpha = args.alpha
-	#You should write some code for handling flags here
-	if args.ising_model:
-		if args.use_network:
-			network = Network()
-			# add variables to arg parse
-			network.make_small_world_network(10, 0.2)
-			
-			ising_main(network, alpha, external)
-			
-        else:
-			pop = np.random.choice([-1,1],size=(100,100))
-			ising_main(pop, alpha, external)
-	
-		
+parser.add_argument("-use_network", action='store_true')
+
+#Variable definition
+args = parser.parse_args()
+external = args.external
+alpha = args.alpha
+#You should write some code for handling flags here
+if args.ising_model:
+	if args.use_network:
+		network = Network()
+		# add variables to arg parse
+		network.make_small_world_network(10, 0.2)
+
+		ising_main(network, alpha, external)
+
+else:
+	pop = np.random.choice([-1,1],size=(100,100))
+	ising_main(pop, alpha, external)
+
+
 if __name__=="__main__":
 	main()
