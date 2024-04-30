@@ -211,11 +211,13 @@ def test_network_functions():
 
 	print("All tests passed!")
 
+if __name__ == '__main__':
 	num_nodes = 10
 	network = Network(num_nodes)
 	network.make_random_network(10, 0.5)
 	network.plot_network()
 	plt.show()
+	print("All tests passed!")
 
 def test_networks():
 
