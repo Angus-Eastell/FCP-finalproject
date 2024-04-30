@@ -532,25 +532,25 @@ def main():
 		plt.show()
 
 	if "-defuant" in sys.argv:
-            num_individuals = 100
-            T = 0.1
-            beta = 0.5
-            num_updates = 10000
+		num_individuals = 100
+		T = 0.1
+		beta = 0.5
+		num_updates = 10000
 
-            # check if command line arguments are provided
-            if "-beta" in sys.argv:
-                beta_index = sys.argv.index("-beta")
-                beta = float(sys.argv[beta_index + 1])
-            if "-threshold" in sys.argv:
-                threshold_index = sys.argv.index("-threshold")
-                T = float(sys.argv[threshold_index + 1])
+		# check if command line arguments are provided
+		if "-beta" in sys.argv:
+			beta_index = sys.argv.index("-beta")
+			beta = float(sys.argv[beta_index + 1])
+		if "-threshold" in sys.argv:
+			threshold_index = sys.argv.index("-threshold")
+			T = float(sys.argv[threshold_index + 1])
 
-            update_history = updates(num_individuals, T, beta, num_updates)
-            plot_histogram(update_history[-1])
-            plot_updates(update_history)
+		update_history = updates(num_individuals, T, beta, num_updates)
+		plot_histogram(update_history[-1])
+		plot_updates(update_history)
 	elif "-test_defuant" in sys.argv:
-            test_defuant()
-	
+		test_defuant()
+
 
 		# Network
 		parser = argparse.ArgumentParser()
