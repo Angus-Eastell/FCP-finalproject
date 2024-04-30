@@ -537,7 +537,7 @@ def main():
             beta = 0.5
             num_updates = 10000
 
-            # Check if command line arguments are provided
+            # check if command line arguments are provided
             if "-beta" in sys.argv:
                 beta_index = sys.argv.index("-beta")
                 beta = float(sys.argv[beta_index + 1])
