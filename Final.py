@@ -543,5 +543,17 @@ def main():
 		plot_histogram(update_history[-1])
 		plot_updates(update_history)
 
+		# Network
+		parser = argparse.ArgumentParser()
+		parser.add_argument("-network", type=int)
+		parser.add_argument("-test_network", action="store_true")
+		args = parser.parse_args()
+		if args.test_network:
+			num_nodes = 10
+			network = Network(num_nodes)
+			network.make_random_network(10, 0.5)
+			network.plot_network()
+			plt.show()
+
 if __name__=="__main__":
 	main()
