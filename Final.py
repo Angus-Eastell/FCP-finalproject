@@ -211,14 +211,6 @@ def test_network_functions():
 
 	print("All tests passed!")
 
-if __name__ == '__main__':
-	num_nodes = 10
-	network = Network(num_nodes)
-	network.make_random_network(10, 0.5)
-	network.plot_network()
-	plt.show()
-	print("All tests passed!")
-
 def test_networks():
 
 	#Ring network
@@ -405,7 +397,6 @@ def update_opinion(opinions, T, beta):
 	neighbor = select_neighbor(i, num_individuals)
 	diff = abs(opinions[i] - opinions[neighbor])
 	if diff < T:
-		print(diff,T)
 		opinions[i] += beta * (opinions[neighbor] - opinions[i])
 		opinions[neighbor] += beta * (opinions[i] - opinions[neighbor])
 
@@ -480,40 +471,39 @@ def main():
 	parser.add_argument("-external", type=float, default=0)
 	parser.add_argument("-alpha", type=float, default=1)
 	parser.add_argument("-test_ising", action='store_true')
+	parser.add_argument("-ring_network", nargs=1, type=int)
+	parser.add_argument("-small_world", nargs=1, type=int)
+	parser.add_argument("-re_wire", type=float, default=0.2)
+	parser.add_argument("-defuant", action='store_true')
+	parser.add_argument("-beta", type=float, nargs=1)
+	parser.add_argument("-threshold", type=float, nargs=1)
+	parser.add_argument("-test_defuant", action= 'store_true')
+	parser.add_argument("-network",nargs= 1, type=int)
+	parser.add_argument("-test_network", action="store_true")
 
 	#Variable definition
 	args = parser.parse_args()
 	external = args.external
 	alpha = args.alpha
+	N_ring = args.ring_network
+	N_small = args.small_world
+	re_wire_prob = args.re_wire
+	defuant = args.defuant
+	beta_command = args.beta
+	threshold_command = args.threshold
+	test_def = args.test_defuant
+	network_command = args.network
+	test_net = args.test_network
+
 	#You should write some code for handling flags here
 	if args.ising_model:
 		pop = np.random.choice([-1,1],size=(100,100))
 		ising_main(pop, alpha, external)
 
 
-	# small world
-
-	# Create Parser object
-	# Add arguments
-	parser.add_argument("-ring_network", nargs=1, type=int, default=10)
-	parser.add_argument("-small_world", nargs=1, type=int, default=10)
-	parser.add_argument("-re_wire", type=float, default=0.2)  #
-
-	# Variable definition
-	args = parser.parse_args()
-	N_ring = args.ring_network
-	N_small = args.small_world
-	re_wire_prob = args.re_wire
-	if type(N_ring) == list:
-		N_ring = N_ring[0]
-
-	if type(N_small) == list:
-		N_small = N_small[0]
-
-	if type(re_wire_prob) == list:
-		re_wire_prob = re_wire_prob[0]
-
 	if N_ring:
+		if type(N_ring) == list:
+			N_ring = N_ring[0]
 		# Create a Network instance
 		network = Network()
 		network.make_ring_network(N_ring)
@@ -523,6 +513,12 @@ def main():
 		plt.show()
 
 	if N_small:
+
+		N_small = N_small[0]
+
+		if re_wire_prob:
+			re_wire_prob = re_wire_prob[0]
+
 		# Create a Network instance
 		network = Network()
 		network.make_small_world_network(N_small, re_wire_prob)
@@ -531,38 +527,33 @@ def main():
 		# Show the plot
 		plt.show()
 
-	if "-defuant" in sys.argv:
+	if defuant:
 		num_individuals = 100
 		T = 0.1
 		beta = 0.5
 		num_updates = 10000
 
 		# check if command line arguments are provided
-		if "-beta" in sys.argv:
-			beta_index = sys.argv.index("-beta")
-			beta = float(sys.argv[beta_index + 1])
-		if "-threshold" in sys.argv:
-			threshold_index = sys.argv.index("-threshold")
-			T = float(sys.argv[threshold_index + 1])
+		if beta_command:
+			beta = beta_command
+		if threshold_command:
+			T = threshold_command
 
 		update_history = updates(num_individuals, T, beta, num_updates)
 		plot_histogram(update_history[-1])
 		plot_updates(update_history)
-	elif "-test_defuant" in sys.argv:
+	if test_def:
 		test_defuant()
 
+	if network_command:
+		num_nodes = network_command
+		network = Network(num_nodes)
+		network.make_random_network(num_nodes, 0.5)
+		network.plot_network()
+		plt.show()
 
-		# Network
-		parser = argparse.ArgumentParser()
-		parser.add_argument("-network", type=int)
-		parser.add_argument("-test_network", action="store_true")
-		args = parser.parse_args()
-		if args.test_network:
-			num_nodes = 10
-			network = Network(num_nodes)
-			network.make_random_network(10, 0.5)
-			network.plot_network()
-			plt.show()
+	if test_net:
+		test_network_functions()
 
 if __name__=="__main__":
 	main()
