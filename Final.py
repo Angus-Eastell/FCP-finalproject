@@ -535,9 +535,9 @@ def main():
 
 		# check if command line arguments are provided
 		if beta_command:
-			beta = beta_command
+			beta = beta_command[0]
 		if threshold_command:
-			T = threshold_command
+			T = threshold_command[0]
 
 		update_history = updates(num_individuals, T, beta, num_updates)
 		plot_histogram(update_history[-1])
