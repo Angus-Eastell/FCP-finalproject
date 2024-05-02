@@ -426,84 +426,160 @@ This section contains code for the Defuant Model - task 2 in the assignment
 ==============================================================================================================
 '''
 
-# initialize opinions of each individuals with random values between 0 and 1.
+# initialize opinions of each individual with random values between 0 and 1.
 def initialize_opinions(num_individuals):
-	return np.random.rand(num_individuals)
+    """
+    Initialize opinions for a given number of individuals.
+
+    Parameters:
+    num_individuals (int): The number of individuals to initialize opinions.
+
+    Returns:
+    numpy.ndarray: An array of randomly generated opinions of each individual.
+    """
+    return np.random.rand(num_individuals)
+
 
 
 # update opinions.
 def update_opinion(opinions, T, beta):
-	num_individuals = len(opinions)
-	i = np.random.randint(num_individuals)
-	neighbor = select_neighbor(i, num_individuals)
-	diff = abs(opinions[i] - opinions[neighbor])
-	if diff < T:
-		opinions[i] += beta * (opinions[neighbor] - opinions[i])
-		opinions[neighbor] += beta * (opinions[i] - opinions[neighbor])
+    """
+    Update opinions.
+
+    Parameters:
+    opinions (numpy.ndarray): An array of opinions for each individual.
+    T (float): The threshold.
+    beta (float): The coupling parameter.
+
+    Returns:
+    None
+    """
+    num_individuals = len(opinions)
+    i = np.random.randint(num_individuals)
+    neighbor = select_neighbor(i, num_individuals)
+    diff = abs(opinions[i] - opinions[neighbor])
+    if diff < T:
+        opinions[i] += beta * (opinions[neighbor] - opinions[i])
+        opinions[neighbor] += beta * (opinions[i] - opinions[neighbor])
+
 
 
 # randomly choose left or right neighbor.
 def select_neighbor(i, num_individuals):
-	return (i - 1) % num_individuals if np.random.rand() < 0.5 else (i + 1) % num_individuals
+    """
+    Select a neighbor's index.
+
+    Parameters:
+    i (int): The index of the current individual.
+    num_individuals (int): The total number of individuals.
+
+    Returns:
+    int: The index of the selected neighbor.
+    """
+    return (i - 1) % num_individuals if np.random.rand() < 0.5 else (i + 1) % num_individuals
+
 
 
 # run opinion updates and record history.
 def updates(num_individuals, T, beta, num_updates):
-	opinions = initialize_opinions(num_individuals)
-	update_history = np.zeros((num_updates, num_individuals))
-	for update_step in range(num_updates):
-		update_opinion(opinions, T, beta)
-		update_history[update_step] = opinions.copy()
-	return update_history
+    """
+    Perform multiple updates of opinions according to defuant model.
+
+    Parameters:
+    num_individuals (int): The number of individuals.
+    T (float): The threshold.
+    beta (float): The coupling parameter.
+    num_updates (int): The number of updates.
+
+    Returns:
+    numpy.ndarray: An array representing the history of opinion updates.
+                   Every row contains the opinions after an update step.
+                   The array has shape (num_updates, num_individuals).
+    """
+    opinions = initialize_opinions(num_individuals)
+    update_history = np.zeros((num_updates, num_individuals))
+    for update_step in range(num_updates):
+        update_opinion(opinions, T, beta)
+        update_history[update_step] = opinions.copy()
+    return update_history
+
 
 
 # plot opinion distribution.
 def plot_histogram(opinions):
-	plt.figure(figsize=(10, 5))
-	plt.hist(opinions, bins=20, alpha=0.75)
-	plt.title('Opinion Distribution')
-	plt.xlabel('Opinion')
-	plt.ylabel('Frequency')
-	plt.show()
+    """
+    Plot a histogram of opinion distribution.
+
+    Parameters:
+    opinions (numpy.ndarray): An array of opinions for each individual.
+
+    Returns:
+    None
+    """
+    plt.figure(figsize=(10, 5))
+    plt.hist(opinions, bins=20, alpha=0.75)
+    plt.title('Opinion Distribution')
+    plt.xlabel('Opinion')
+    plt.ylabel('Frequency')
+    plt.show()
+
 
 
 # plot opinion evolution over time.
 def plot_updates(update_history):
-	plt.figure(figsize=(15, 8))
-	num_updates, num_individuals = update_history.shape
-	for person in range(num_individuals):
-		plt.scatter(np.arange(num_updates), update_history[:, person], color='red')
-	plt.title('Opinion Dynamics')
-	plt.xlabel('Time Step')
-	plt.ylabel('Opinion')
-	plt.ylim(0, 1)
-	plt.show()
+    """
+    Plot opinion dynamics over time steps.
+
+    Parameters:
+    update_history (numpy.ndarray): An array representing the history of opinion updates.
+                                    Every row contains the opinions after an update step.
+                                    The array has shape (num_updates, num_individuals).
+
+    Returns:
+    None
+    """
+    plt.figure(figsize=(15, 8))
+    num_updates, num_individuals = update_history.shape
+    for person in range(num_individuals):
+        plt.scatter(np.arange(num_updates), update_history[:, person], color='red')
+    plt.title('Opinion Dynamics')
+    plt.xlabel('Time Step')
+    plt.ylabel('Opinion')
+    plt.ylim(0, 1)
+    plt.show()
+
 
 
 # test the model under different parameters.
 def test_defuant():
-	num_individuals = 100
-	T_defuant = 0.2
-	T_big = 0.8
-	beta_defuant = 0.2
-	beta_big = 0.8
-	num_updates = 10000
+    """
+    Test the defuant model implementation.
 
-	# test with defuant beta and defuant T
-	update_history_defuant = updates(num_individuals, T_defuant, beta_defuant, num_updates)
-	final_opinions_defuant = update_history_defuant[-1]
-	assert len(set(final_opinions_defuant)) > 1, "Opinions did not start to diverge into clusters with default beta"
+    Returns:
+    None
+    """
+    num_individuals = 100
+    T_defuant = 0.2
+    T_big = 0.8
+    beta_defuant = 0.2
+    beta_big = 0.8
+    num_updates = 10000
 
-	# test with small beta
-	update_history_small = updates(num_individuals, T_defuant, beta_defuant, num_updates)
-	final_opinions_small = update_history_small[-1]
+    # test with defuant beta and defuant T
+    update_history_defuant = updates(num_individuals, T_defuant, beta_defuant, num_updates)
+    final_opinions_defuant = update_history_defuant[-1]
+    assert len(set(final_opinions_defuant)) > 1, "Opinions did not start to diverge into clusters with default beta"
 
-	# test with big beta
-	update_history_big = updates(num_individuals, T_defuant, beta_big, num_updates)
-	final_opinions_big = update_history_big[-1]
-	assert len(set(final_opinions_big)) < len(set(final_opinions_small)), "Opinions did not converge faster with bigger beta"
+    # test with small beta
+    update_history_small = updates(num_individuals, T_defuant, beta_defuant, num_updates)
+    final_opinions_small = update_history_small[-1]
 
-	print("All tests passed successfully!")
+    # test with big beta
+    update_history_big = updates(num_individuals, T_defuant, beta_big, num_updates)
+    final_opinions_big = update_history_big[-1]
+    assert len(set(final_opinions_big)) < len(set(final_opinions_small)), "Opinions did not converge faster with bigger beta"
+
+    print("All tests passed successfully!")
 
 
 '''
