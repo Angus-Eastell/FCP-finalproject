@@ -623,14 +623,19 @@ def main():
 		update_history = updates(num_individuals, T, beta, num_updates)
 		plot_histogram(update_history[-1])
 		plot_updates(update_history)
+
 	if test_def:
 		test_defuant()
 
 	if network_command:
+
 		connection_probability = 0.5
-		num_nodes = network_command
+		num_nodes = network_command[0]
 		network = Network(num_nodes)
 		network.make_random_network(num_nodes, connection_probability)
+		print("Mean degree:", network.get_mean_degree())
+		print("Average Path Length:", network.get_mean_path_length())
+		print("Clustering co-efficient:", network.get_mean_clustering())
 		network.plot_network()
 		plt.show()
 
