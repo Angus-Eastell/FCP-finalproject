@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import argparse
-import sys
 import random
 import math
 
@@ -226,8 +225,8 @@ def test_networks():
 
 	print("Testing ring network")
 	assert(network.get_mean_degree()==2), network.get_mean_degree()
-	assert(network.get_clustering()==0), network.get_clustering()
-	assert(network.get_path_length()==2.777777777777778), network.get_path_length()
+	assert(network.get_mean_clustering()==0), network.get_mean_clustering()
+	assert(network.get_mean_path_length()==2.777777777777778), network.get_mean_path_length()
 
 	nodes = []
 	num_nodes = 10
@@ -240,8 +239,8 @@ def test_networks():
 
 	print("Testing one-sided network")
 	assert(network.get_mean_degree()==1), network.get_mean_degree()
-	assert(network.get_clustering()==0),  network.get_clustering()
-	assert(network.get_path_length()==5), network.get_path_length()
+	assert(network.get_mean_clustering()==0),  network.get_mean_clustering()
+	assert(network.get_mean_path_length()==5), network.get_mean_path_length()
 
 	nodes = []
 	num_nodes = 10
@@ -254,8 +253,8 @@ def test_networks():
 
 	print("Testing fully connected network")
 	assert(network.get_mean_degree()==num_nodes-1), network.get_mean_degree()
-	assert(network.get_clustering()==1),  network.get_clustering()
-	assert(network.get_path_length()==1), network.get_path_length()
+	assert(network.get_mean_clustering()==1),  network.get_mean_clustering()
+	assert(network.get_mean_path_length()==1), network.get_mean_path_length()
 
 	print("All tests passed")
 
@@ -441,28 +440,28 @@ def plot_updates(update_history):
 
 # test the model under different parameters.
 def test_defuant():
-    num_individuals = 100
-    T_defuant = 0.2
-    T_big = 0.8
-    beta_defuant = 0.2
-    beta_big = 0.8
-    num_updates = 10000
+	num_individuals = 100
+	T_defuant = 0.2
+	T_big = 0.8
+	beta_defuant = 0.2
+	beta_big = 0.8
+	num_updates = 10000
 
-    # test with defuant beta and defuant T
-    update_history_defuant = updates(num_individuals, T_defuant, beta_defuant, num_updates)
-    final_opinions_defuant = update_history_defuant[-1]
-    assert len(set(final_opinions_defuant)) > 1, "Opinions did not start to diverge into clusters with default beta"
+	# test with defuant beta and defuant T
+	update_history_defuant = updates(num_individuals, T_defuant, beta_defuant, num_updates)
+	final_opinions_defuant = update_history_defuant[-1]
+	assert len(set(final_opinions_defuant)) > 1, "Opinions did not start to diverge into clusters with default beta"
 
-    # test with small beta
-    update_history_small = updates(num_individuals, T_defuant, beta_defuant, num_updates)
-    final_opinions_small = update_history_small[-1]
+	# test with small beta
+	update_history_small = updates(num_individuals, T_defuant, beta_defuant, num_updates)
+	final_opinions_small = update_history_small[-1]
 
-    # test with big beta
-    update_history_big = updates(num_individuals, T_defuant, beta_big, num_updates)
-    final_opinions_big = update_history_big[-1]
-    assert len(set(final_opinions_big)) < len(set(final_opinions_small)), "Opinions did not converge faster with bigger beta"
+	# test with big beta
+	update_history_big = updates(num_individuals, T_defuant, beta_big, num_updates)
+	final_opinions_big = update_history_big[-1]
+	assert len(set(final_opinions_big)) < len(set(final_opinions_small)), "Opinions did not converge faster with bigger beta"
 
-    print("All tests successfully!")
+	print("All tests passed successfully!")
 
 
 '''
@@ -521,12 +520,9 @@ def main():
 		plt.show()
 
 	if N_small:
-
 		N_small = N_small[0]
-
-		if re_wire_prob:
+		if type(re_wire_prob) == list:
 			re_wire_prob = re_wire_prob[0]
-
 		# Create a Network instance
 		network = Network()
 		network.make_small_world_network(N_small, re_wire_prob)
@@ -561,7 +557,7 @@ def main():
 		plt.show()
 
 	if test_net:
-		test_network_functions()
+		test_networks()
 
 if __name__=="__main__":
 	main()
