@@ -1,12 +1,16 @@
 # FCP-finalproject
-git for final fcp project
-Task2
-Ps：When the first histogram is generated, you need to turn it off so that the second scatter chart will be displayed.
+Read me for final project:
 
-Import the required libraries, numpy, matplotlib.
+Import the required libraries, numpy, matplotlib, argparse, math, random.
+
+Task 1:
+
+
+Task 2:
+Ps：When the first histogram is generated, you need to turn it off so that the second scatter chart will be displayed.
  
 In the terminal, the command “-defuant” is used to run the defuant model，“-test_defuant” is used to run the test code of the model，“-beta” is used to assign a value to the beta，“-threshold” is used to assign a value to the T.
-                      
+
 First of all, to give each individual an initial value of an opinion, I created a function called initialise_opinions, using the numpy.random.rand() function in the numpylibrary to randomly generate an opinion for each individual. Initial value. In this way, an array of random numbers is generated, and the length of this array depends on num_individuals, indicating the total number of people in the model. Here, I set its value to 100.
  
 Then, I created a function called update_opinion（）to update the individual's opinion according to the calculation formula provided by the task. In this process, I created an index i to indicate the individuals selected in the current update to change their opinion values and make the code clearer. Randomly select an individual and then randomly select the neighbor on the left or right of the individual, and update the individual's views according to the differences between the selected individual and the neighbour's views.
@@ -20,3 +24,14 @@ In the drawing part, the plot_histogram（）function is used to draw the histog
 In the test code part, according to the requirements of the question, I created a function called test_defuant（）to test if the update of individual opinions in the whole simulation is right. First, the parameters used in the test are set, and then the smaller and larger beta values are used to simulate respectively. After that, I conducted assertive tests to test the use of the default beta and T values, and the larger beta and T values, respectively, and compared the default values of the two as the smaller values with the larger values of the two. and checked whether the results of the simulation of the two situations met expectations respectively to verify the correctness of my simulation process.
  
 Finally, I used an if statement to check whether the execution parameters of the test code appear in the command line parameters. If so, run the test code. If not, run the main code according to the set parameters, or according to the command "- Beta" and command "- Threshold" . This is, the simulated program for task2.
+
+Task 3:
+
+Task 4:
+For the make_ring_network function I created a network of nodes initially with their connections set to 0. Then using the modulo function I assigned connections to nearby nodes based on the distace given in the function. This is then plotted when called in the main function with -ring_network and then a integer value for the size of the network.
+For the small world network, it is neccessary to first call the make_ring_function with neighbour range 2. I then iterated through the nodes and for each connection tested it to see if it would be rewired. During this if statements were used to ensure no self-connections. This was again plotted in the main function with -small_world with an integer fo the size of the network and an optional -re_wire argument which can be followed by a float to determine the re wire probability used. If no re wire probability is provided it is set to the defualt 0.2. 
+
+Task 5:
+
+We chose to implement the small world network into the ising model. When called using the -use_network argument after the -ising_model argument. The small world network is then created in the main function and assinged a random opinion. Every ising model function is edited to allow for the passing through of a network. Each function works the same however is adjusted for the needs of a network instead of an array. This is then plotted in an animation. The averages of the opinion is also calculated calculated at every time period and then is plotted at the end. 
+
