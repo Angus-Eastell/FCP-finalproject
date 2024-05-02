@@ -141,22 +141,21 @@ def get_neighbours_opinions(population=None, row=None, col=None, node=None, netw
     return neighbours_values
 
 
-def calculate_agreement(population=None, row=None, col=None, network=None, external=0.0, node=None,
-                        Number_of_nodes=None):
+def calculate_agreement(population=None, row=None, col=None, network=None, external=0.0, node=None, Number_of_nodes=None):
     '''
-	This function should return the extent to which a cell agrees with its neighbours.
-	Inputs: population (numpy array)
-			row (int)
-			col (int)
-			external (float)
-	Returns:
-			change_in_agreement (float)
-	'''
+    This function should return the extent to which a cell agrees with its neighbours.
+    Inputs: population (numpy array)
+            row (int)
+            col (int)
+            external (float)
+    Returns:
+        change_in_agreement (float)
+    '''
     agreement = 0
     if population is not None:
         individual_opinion = population[row, col]
-        neighbour_opinion = get_neighbours_opinions(population=population, row=row,
-                                                    col=col)  # Uses function to gain and store the neighbours opinions in a variable
+        # Uses function to gain and store the neighbours opinions in a variable
+        neighbour_opinion = get_neighbours_opinions(population=population, row=row,col=col)
 
     if network is not None:
         individual_opinion = network.nodes[node].value
@@ -164,6 +163,7 @@ def calculate_agreement(population=None, row=None, col=None, network=None, exter
 
     for opinion in neighbour_opinion:
         agreement += individual_opinion * opinion
+
     agreement += external * individual_opinion  # enforcing original opinion of individual
 
     return agreement
@@ -171,10 +171,10 @@ def calculate_agreement(population=None, row=None, col=None, network=None, exter
 
 def ising_step(population=None, network=None, external=0.0, alpha=1.0, Number_of_nodes=None):
     '''
-	This function will perform a single update of the Ising model
-	Inputs: population (numpy array)
-			external (float) - optional - the magnitude of any external "pull" on opinion
-	'''
+    This function will perform a single update of the Ising model
+    Inputs: population (numpy array)
+            external (float) - optional - the magnitude of any external "pull" on opinion
+    '''
     if population is not None:
         n_rows, n_cols = population.shape
         row = np.random.randint(0, n_rows)
@@ -207,8 +207,8 @@ def ising_step(population=None, network=None, external=0.0, alpha=1.0, Number_of
 
 def plot_ising(im, population):
     '''
-	This function will display a plot of the Ising model
-	'''
+    This function will display a plot of the Ising model
+    '''
 
     new_im = np.array([[255 if val == -1 else 1 for val in rows] for rows in population], dtype=np.int8)
     im.set_data(new_im)
@@ -280,3 +280,31 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+# ignore this code i just copied it in here so it wasnt deleted forever
+
+"""
+def test_network_functions():
+	
+	# Test make_random_network
+	network = Network(10)
+	network.make_random_network(0.5)
+	assert isinstance(network, Network)
+	assert len(network.nodes) == 10
+
+	# Test calculate_mean_degree
+	mean_degree = network.get_mean_degree()
+	assert isinstance(mean_degree, float)
+
+	# Test calculate_mean_clustering_coefficient
+	mean_clustering_coef = network.get_mean_clustering()
+	assert isinstance(mean_clustering_coef, float)
+
+	# Test calculate_mean_path_length
+	mean_path_length = network.get_mean_path_length()
+	assert isinstance(mean_path_length, float)
+
+	print("All tests passed!")
+"""
