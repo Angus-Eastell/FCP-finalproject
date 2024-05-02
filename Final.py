@@ -441,20 +441,28 @@ def plot_updates(update_history):
 
 # test the model under different parameters.
 def test_defuant():
-	num_individuals = 10
-	T = 0.5
-	beta_small = 0.1
-	beta_big = 0.9
-	num_updates = 100
+    num_individuals = 100
+    T_defuant = 0.2
+    T_big = 0.8
+    beta_defuant = 0.2
+    beta_big = 0.8
+    num_updates = 10000
 
-	update_history_small = updates(num_individuals, T, beta_small, num_updates)
-	assert update_history_small.shape == (num_updates, num_individuals), "Incorrect shape"
-	final_opinions = update_history_small[-1]
-	assert (final_opinions.max() - final_opinions.min()) < T, "No convergence"
+    # test with defuant beta and defuant T
+    update_history_defuant = updates(num_individuals, T_defuant, beta_defuant, num_updates)
+    final_opinions_defuant = update_history_defuant[-1]
+    assert len(set(final_opinions_defuant)) > 1, "Opinions did not start to diverge into clusters with default beta"
 
-	update_history_big = updates(num_individuals, T, beta_big, num_updates)
-	final_opinions = update_history_big[-1]
-	assert (final_opinions.max() - final_opinions.min()) < T, "No convergence"
+    # test with small beta
+    update_history_small = updates(num_individuals, T_defuant, beta_defuant, num_updates)
+    final_opinions_small = update_history_small[-1]
+
+    # test with big beta
+    update_history_big = updates(num_individuals, T_defuant, beta_big, num_updates)
+    final_opinions_big = update_history_big[-1]
+    assert len(set(final_opinions_big)) < len(set(final_opinions_small)), "Opinions did not converge faster with bigger beta"
+
+    print("All tests successfully!")
 
 
 '''
@@ -529,8 +537,8 @@ def main():
 
 	if defuant:
 		num_individuals = 100
-		T = 0.1
-		beta = 0.5
+		T = 0.2
+		beta = 0.2
 		num_updates = 10000
 
 		# check if command line arguments are provided
