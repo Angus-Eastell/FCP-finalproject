@@ -5,10 +5,7 @@ Ps：When the first histogram is generated, you need to turn it off so that the 
 
 Import the required libraries, numpy, matplotlib.
  
-In the terminal, the command “-defuant” is used to run the defuant model.
-                         “-test_defuant” is used to run the test code of the model.
-                         “-beta” is used to assign a value to the beta.
-                         “-threshold” is used to assign a value to the T.
+In the terminal, the command “-defuant” is used to run the defuant model，“-test_defuant” is used to run the test code of the model，“-beta” is used to assign a value to the beta，“-threshold” is used to assign a value to the T.
                       
 First of all, to give each individual an initial value of an opinion, I created a function called initialise_opinions, using the numpy.random.rand() function in the numpylibrary to randomly generate an opinion for each individual. Initial value. In this way, an array of random numbers is generated, and the length of this array depends on num_individuals, indicating the total number of people in the model. Here, I set its value to 100.
  
