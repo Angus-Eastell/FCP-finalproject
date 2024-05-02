@@ -412,12 +412,19 @@ def ising_main(population=None, network=None, alpha=None, external=0.0, Number_o
 			plot_ising(im, population)
 
 	if network is not None:
+		average_opinion = []
 		# Iterating an update 100 times
 		for frame in range(100):
-			# Iterating single steps 1000 times to form an update
-			for step in range(1000):
-				ising_step(network=network, external=external, alpha=alpha, Number_of_nodes=Number_of_nodes)
+			ising_step(network=network, external=external, alpha=alpha, Number_of_nodes=Number_of_nodes)
 			print('Step:', frame, end='\r')
+			average_opinion.append(np.sum([node.value for node in network.nodes]) / len(network.nodes))
+
+		"""time = list(range(len(average_opinion)))
+		plt.plot(time, average_opinion)
+		plt.xlabel("Time")
+		plt.ylabel('Averages Value')
+		plt.title('Mean Network Opinion')
+		plt.show()"""
 
 
 '''
@@ -428,16 +435,16 @@ This section contains code for the Defuant Model - task 2 in the assignment
 
 # initialize opinions of each individual with random values between 0 and 1.
 def initialize_opinions(num_individuals):
-    """
-    Initialize opinions for a given number of individuals.
+	"""
+	Initialize opinions for a given number of individuals.
 
-    Parameters:
-    num_individuals (int): The number of individuals to initialize opinions.
+	Parameters:
+	num_individuals (int): The number of individuals to initialize opinions.
 
-    Returns:
-    numpy.ndarray: An array of randomly generated opinions of each individual.
-    """
-    return np.random.rand(num_individuals)
+	Returns:
+	numpy.ndarray: An array of randomly generated opinions of each individual.
+	"""
+	return np.random.rand(num_individuals)
 
 
 
