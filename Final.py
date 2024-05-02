@@ -91,8 +91,8 @@ class Network:
 			for neighbour_index, is_connected in enumerate(current.connections):
 				if is_connected and not visited[self.nodes[neighbour_index]]:
 					neighbour = self.nodes[neighbour_index]
-					visited[neighbour_index] = True
-					distances[neighbour_index] = distances[current] + 1
+					visited[neighbour] = True
+					distances[neighbour] = distances[current] + 1
 					queue.append(neighbour)
 		return distances
 
