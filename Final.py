@@ -561,7 +561,7 @@ def main():
 				random_opinion = np.random.choice([-1, 1])
 				# appends opinion to node
 				network.nodes[node].value = random_opinion
-				ising_main(network=network, alpha=alpha, external=external, Number_of_nodes=N)
+				ising_main(network=network, alpha=alpha, external=external, Number_of_nodes=ising_network)
 
 		# if using normal ising model
 		else:
