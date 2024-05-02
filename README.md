@@ -26,6 +26,12 @@ In the test code part, according to the requirements of the question, I created 
 Finally, I used an if statement to check whether the execution parameters of the test code appear in the command line parameters. If so, run the test code. If not, run the main code according to the set parameters, or according to the command "- Beta" and command "- Threshold" . This is, the simulated program for task2.
 
 Task 3:
+This network analysis contains Python code for creating and analysing various types of networks, including random networks. 
+The code provides functionality to calculate the mean degree, mean clustering coefficient, and mean path length of the networks, as well as visualize the network structure. 
+Furthermore, this will create a random network of the specified size and plot the network structure. It will also print the mean degree, mean clustering coefficient, and mean path length to the console with the appropriate command-line arguments. 
+For the -test_network, This will run a set of tests to verify the correctness of the get_mean_degree(), get_mean_clustering, and get_mean_path_length functions. To make networks with random connectivity the get_mean_degree calculates the mean degree of the network, get_mean_clustering calculates the mean clustering coefficient of the network, get_mean_path_length calculates the mean path length of the network using a breadth-first search (BFS) algorithm and make_random_network(N, connection_probability=0.5) creates a random network with N nodes and a given connection probability. 
+The bfs(self, start) performs a BFS traversal starting from the given node, returning a dictionary of distances from the start node to all other nodes then plot_network visualises the network structure using Matplotlib. I created and plotted a network of size N by calling the program with a flag -network. The code should print the mean degree, average path length, and clustering coefficient for the network to the terminal by a random network of size 10. Finally,  -test_network should run the test functions that I have provided. 
+
 
 Task 4:
 For the make_ring_network function I created a network of nodes initially with their connections set to 0. Then using the modulo function I assigned connections to nearby nodes based on the distace given in the function. This is then plotted when called in the main function with -ring_network and then a integer value for the size of the network.

@@ -56,6 +56,7 @@ class Network:
 
 	def get_mean_path_length(self):
 		#Your code for task 3 goes here
+		#Calculate mean path length
 		total_path_length = 0
 		for node in self.nodes:
 			distances = self.bfs(node)
