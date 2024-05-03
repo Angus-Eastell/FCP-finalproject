@@ -364,12 +364,30 @@ def ising_main(population=None, network=None, alpha=None, external=0.0, Number_o
 			plot_ising(im, population)
 
 	if network is not None:
+		average_opinion = []
 		# Iterating an update 100 times
 		for frame in range(100):
 			# Iterating single steps 1000 times to form an update
 			for step in range(1000):
 				ising_step(network=network, external=external, alpha=alpha, Number_of_nodes=Number_of_nodes)
 			print('Step:', frame, end='\r')
+
+			average_opinion.append(np.sum([node.value for node in network.nodes])/len(network.nodes))
+
+			network.plot()
+			plt.pause(0.1)
+			plt.close()
+
+		plt.clf()
+		time = list(range(len(average_opinion)))
+		plt.plot(time, average_opinion)
+		plt.xlabel("Time")
+		plt.ylabel("Average Opinion")
+		plt.title("Mean Network Opinion")
+		plt.show()
+
+
+
 
 
 '''
@@ -597,7 +615,7 @@ def main():
 				random_opinion = np.random.choice([-1, 1])
 				# appends opinion to node
 				network.nodes[node].value = random_opinion
-				ising_main(network=network, alpha=alpha, external=external, Number_of_nodes=ising_network)
+			ising_main(network=network, alpha=alpha, external=external, Number_of_nodes=ising_network)
 
 		# if using normal ising model
 		else:
