@@ -307,23 +307,23 @@ def test_ising():
 	'''
 	print("Testing ising model calculations")
 	population = -np.ones((3, 3))
-	assert(calculate_agreement(population,1,1)==4), "Test 1"
+	assert(calculate_agreement(population= population,row=1,col=1)==4), "Test 1"
 	population[1, 1] = 1.
-	assert(calculate_agreement(population,1,1)==-4), "Test 2"
+	assert(calculate_agreement(population= population,row=1,col=1)==-4), "Test 2"
 	population[0, 1] = 1.
-	assert(calculate_agreement(population,1,1)==-2), "Test 3"
+	assert(calculate_agreement(population= population,row=1,col=1)==-2), "Test 3"
 	population[1, 0] = 1.
-	assert(calculate_agreement(population,1,1)==0), "Test 4"
+	assert(calculate_agreement(population= population,row=1,col=1)==0), "Test 4"
 	population[2, 1] = 1.
-	assert(calculate_agreement(population,1,1)==2), "Test 5"
+	assert(calculate_agreement(population= population,row=1,col=1)==2), "Test 5"
 	population[1, 2] = 1.
-	assert(calculate_agreement(population,1,1)==4), "Test 6"
+	assert(calculate_agreement(population= population,row=1,col=1)==4), "Test 6"
 	"Testing external pull"
 	population = -np.ones((3, 3))
-	assert(calculate_agreement(population,1,1,1)==3), "Test 7"
-	assert(calculate_agreement(population,1,1,-1)==5), "Test 8"
-	assert(calculate_agreement(population,1,1,10)==-6), "Test 9"
-	assert(calculate_agreement(population,1,1, -10)==14), "Test 10"
+	assert(calculate_agreement(population= population,row=1,col=1,external=1)==3), "Test 7"
+	assert(calculate_agreement(population= population,row=1,col=1,external = -1)==5), "Test 8"
+	assert(calculate_agreement(population= population,row=1,col=1,external= 10)==-6), "Test 9"
+	assert(calculate_agreement(population= population,row=1,col=1, external = -10)==14), "Test 10"
 	print("Tests passed")
 def ising_main(population=None, network=None, alpha=None, external=0.0, Number_of_nodes=None):
 	fig = plt.figure()
@@ -345,12 +345,17 @@ def ising_main(population=None, network=None, alpha=None, external=0.0, Number_o
 			ising_step(network=network, external=external, alpha=alpha, Number_of_nodes=Number_of_nodes)
 			print('Step:', frame, end='\r')
 			average_opinion.append(np.sum([node.value for node in network.nodes]) / len(network.nodes))
-		"""time = list(range(len(average_opinion)))
+			network.plot()
+			plt.pause(0.1)
+			plt.close()
+
+		plt.clf()
+		time = list(range(len(average_opinion)))
 		plt.plot(time, average_opinion)
 		plt.xlabel("Time")
 		plt.ylabel('Averages Value')
 		plt.title('Mean Network Opinion')
-		plt.show()"""
+		plt.show()
 '''
 ==============================================================================================================
 This section contains code for the Defuant Model - task 2 in the assignment
@@ -532,7 +537,7 @@ def main():
 				random_opinion = np.random.choice([-1, 1])
 				# appends opinion to node
 				network.nodes[node].value = random_opinion
-				ising_main(network=network, alpha=alpha, external=external, Number_of_nodes=ising_network)
+			ising_main(network=network, alpha=alpha, external=external, Number_of_nodes=ising_network)
 		# if using normal ising model
 		else:
 			pop = np.random.choice([-1, 1], size=(100, 100))
