@@ -4,7 +4,7 @@ Read me for final project:
 Import the required libraries, numpy, matplotlib, argparse, math, random.
 
 Task 1:
-
+To run task one, use the “-ising_model” flag; this will cause an animation to play representing the Ising model. To alter the output of the figure to show different representations you can alter the external and alpha values of the model. Hence affecting the way each other's opinions affect their surroundings. This can be inputted by giving a value for each by adding “external = x” or “alpha = x” where x is a positive number.
 
 Task 2:
 Ps：When the first histogram is generated, you need to turn it off so that the second scatter chart will be displayed.
@@ -39,5 +39,4 @@ For the small world network, it is neccessary to first call the make_ring_functi
 
 Task 5:
 
-We chose to implement the small world network into the ising model. When called using the -use_network argument after the -ising_model argument. The small world network is then created in the main function and assinged a random opinion. Every ising model function is edited to allow for the passing through of a network. Each function works the same however is adjusted for the needs of a network instead of an array. This is then plotted in an animation. The averages of the opinion is also calculated calculated at every time period and then is plotted at the end. 
-
+We chose to implement the small world network into the ising model. When called using the -use_network argument after the -ising_model argument. The small world network is then created in the main function and assinged a random opinion. Every ising model function is edited to allow for the passing through of a network. Each function works the same however is adjusted for the needs of a network instead of an array. This was then attempted to be plotted in the form of an animation, however we were unable to collate them all into one figure. The average of the opinion is also calculated at every time period and then is plotted at the end.
